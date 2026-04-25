@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BookTable = ({ books }) => {
+const BookTable = ({ books, onBuy }) => {
   return (
     <div className="card table-wrapper">
       <table>
@@ -10,6 +10,7 @@ const BookTable = ({ books }) => {
             <th>Authors</th>
             <th>Price</th>
             <th>Cover Images</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -29,6 +30,9 @@ const BookTable = ({ books }) => {
                      <span style={{color: '#999', fontSize: 24}}>☒</span>
                   </div>
                 )}
+              </td>
+              <td>
+                <button className="btn-primary" style={{padding: '6px 12px', borderRadius: 6, fontSize: '0.8rem'}} onClick={() => onBuy(book.id)}>Buy</button>
               </td>
             </tr>
           ))}

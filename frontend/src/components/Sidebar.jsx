@@ -1,7 +1,8 @@
 import React from 'react';
 import { Home, Users, BookOpen, Settings, BookText } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-const Sidebar = () => {
+const Sidebar = ({ active = 'inventory' }) => {
   return (
     <div className="sidebar">
       <div className="logo">
@@ -14,12 +15,12 @@ const Sidebar = () => {
         <div className="nav-item">
           <Home size={18} /> Home
         </div>
-        <div className="nav-item">
+        <Link to="/users" className={`nav-item ${active === 'authors' ? 'active' : ''}`} style={{textDecoration: 'none'}}>
           <Users size={18} /> Authors
-        </div>
-        <div className="nav-item active">
+        </Link>
+        <Link to="/dashboard" className={`nav-item ${active === 'inventory' ? 'active' : ''}`} style={{textDecoration: 'none'}}>
           <BookOpen size={18} /> Inventory
-        </div>
+        </Link>
         <div className="nav-item">
           <Settings size={18} /> Settings
         </div>

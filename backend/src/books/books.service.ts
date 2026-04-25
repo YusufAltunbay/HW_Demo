@@ -21,4 +21,8 @@ export class BooksService {
     });
     return this.booksRepository.save(book);
   }
+
+  async buy(id: number): Promise<void> {
+    await this.booksRepository.delete(id);
+  }
 }

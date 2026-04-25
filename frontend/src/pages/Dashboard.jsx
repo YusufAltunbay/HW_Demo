@@ -54,6 +54,11 @@ const Dashboard = () => {
     fetchData();
   };
 
+  const handleBuy = async (id) => {
+    await fetch(`http://localhost:3001/books/${id}/buy`, { method: 'POST' });
+    fetchData();
+  };
+
   const handleAddBook = async (e) => {
     e.preventDefault();
     if(!newTitle || !newAuthor || !newPrice) return;
@@ -113,7 +118,7 @@ const Dashboard = () => {
             </div>
           </div>
           
-          <BookTable books={books} />
+          <BookTable books={books} onBuy={handleBuy} />
           
           {isAdmin && (
             <div className="card" style={{marginTop: 30}}>
