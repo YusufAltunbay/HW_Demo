@@ -3,22 +3,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from '../books/book.entity';
 import { Metric } from '../metrics/metric.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class DatabaseSeederService {
   constructor(
     @InjectRepository(Book) private bookRepo: Repository<Book>,
     @InjectRepository(Metric) private metricRepo: Repository<Metric>,
+    @InjectRepository(User) private userRepo: Repository<User>,
   ) {}
 
   async seedGoldenState() {
     await this.bookRepo.clear();
     await this.metricRepo.clear();
+    await this.userRepo.clear();
   }
 
   async seedJunkState() {
     await this.bookRepo.clear();
     await this.metricRepo.clear();
+    await this.userRepo.clear();
 
     const randomStr = (len) => Math.random().toString(36).substring(2, 2 + len);
     const randomPrice = () => parseFloat((Math.random() * 1000).toFixed(2));
@@ -42,5 +46,13 @@ export class DatabaseSeederService {
     }));
 
     await this.metricRepo.save(metrics);
+
+    const users = Array.from({ length: 3 }).map(() => ({
+      username: `RandomAuthor_${randomStr(4)}`,
+      email: `${randomStr(4)}@test.com`,
+      role: 'author'
+    }));
+
+    await this.userRepo.save(users);
   }
 }
