@@ -7,7 +7,7 @@ const RevenueChart = ({ data }) => {
   if (!data || data.length === 0) return null;
 
   const isJunk = data[0].type === 'sales';
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8b5cf6', '#ec4899', '#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#14b8a6', '#f43f5e'];
+  const COLORS = ['#1e293b', '#334155', '#475569', '#0f172a', '#1e3a8a', '#1d4ed8', '#2563eb', '#0369a1', '#0e7490', '#15803d', '#3f6212', '#4c1d95'];
 
   return (
     <div className="card">

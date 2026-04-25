@@ -2,15 +2,15 @@
 
 :root {
   --sidebar-bg: #ffffff;
-  --main-bg: #f4f8fb;
+  --main-bg: #f8fafc;
   --content-bg: #ffffff;
   --text-primary: #0f172a;
-  --text-secondary: #64748b;
+  --text-secondary: #475569;
   --border-color: #e2e8f0;
-  --accent-color: #0284c7;
-  --accent-gradient: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
-  --danger-color: #ef4444;
-  --radius: 16px;
+  --accent-color: #1e293b;
+  --accent-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+  --danger-color: #dc2626;
+  --radius: 12px;
   --font-family: 'Outfit', sans-serif;
 }
 
@@ -23,7 +23,7 @@
 body {
   font-family: var(--font-family);
   background: var(--main-bg);
-  background-image: radial-gradient(circle at top left, #e0f2fe, #f0f9ff);
+  background-image: radial-gradient(circle at top right, #f8fafc, #e2e8f0);
   background-attachment: fixed;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
@@ -63,7 +63,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--accent-color);
+  color: var(--text-primary);
 }
 
 .nav-links {
@@ -81,13 +81,13 @@ body {
   text-decoration: none;
   font-size: 1.05rem;
   font-weight: 500;
-  border-radius: 12px;
+  border-radius: 10px;
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .nav-item:hover {
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
   color: var(--text-primary);
   transform: translateX(4px);
 }
@@ -95,7 +95,7 @@ body {
 .nav-item.active {
   background: var(--accent-gradient);
   color: white;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
 }
 
 .main-content {
@@ -105,7 +105,7 @@ body {
   flex-direction: column;
   overflow-y: auto;
   position: relative;
-  background-color: #f8fafc;
+  background-color: transparent;
 }
 
 .header-title {
@@ -160,7 +160,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background-color: #f0f9ff;
+  background-color: #f8fafc;
 }
 
 .book-title {
@@ -199,7 +199,7 @@ tbody tr:hover {
 .book-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.03);
-  border-color: #bae6fd;
+  border-color: #cbd5e1;
 }
 
 .book-cover-container {
@@ -236,7 +236,7 @@ input, select {
 
 input:focus, select:focus {
   border-color: var(--accent-color) !important;
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.15);
 }
 
 .btn-primary {
@@ -247,14 +247,14 @@ input:focus, select:focus {
   font-family: var(--font-family);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(2, 132, 199, 0.3);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.3);
 }
 .btn-primary:active {
   transform: translateY(0);
@@ -296,7 +296,7 @@ input:focus, select:focus {
 }
 
 .admin-reset-btn.danger {
-  border-color: rgba(239, 68, 68, 0.4);
+  border-color: rgba(220, 38, 38, 0.4);
   color: var(--danger-color);
 }
 
@@ -304,7 +304,7 @@ input:focus, select:focus {
   background: var(--danger-color);
   color: #fff;
   border-color: var(--danger-color);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
 }
 
 .chart-container {
@@ -320,22 +320,23 @@ input:focus, select:focus {
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-color: #e0f2fe; 
-  background-image: radial-gradient(circle at top left, #e0f2fe, #bae6fd);
+  background-color: #f8fafc; 
+  background-image: radial-gradient(circle at top right, #f8fafc, #e2e8f0);
 }
 
 .modern-login-card {
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   width: 420px;
   padding: 50px 40px;
+  border: 1px solid var(--border-color);
 }
 
 .modern-input {
   width: 100%;
   padding: 14px 16px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid var(--border-color);
   font-size: 0.95rem;
   outline: none;
@@ -345,7 +346,7 @@ input:focus, select:focus {
 
 .modern-input:focus {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.15);
 }
 
 .modern-btn {
@@ -354,19 +355,19 @@ input:focus, select:focus {
   background: var(--accent-gradient);
   color: #fff;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   margin-top: 10px;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
   font-family: var(--font-family);
 }
 
 .modern-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.35);
 }
 
 .modern-btn:active {

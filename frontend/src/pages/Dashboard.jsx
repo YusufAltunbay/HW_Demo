@@ -84,7 +84,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/login');
+    navigate('/home');
   };
 
   // Hidden Keyboard Shortcut: Shift + R

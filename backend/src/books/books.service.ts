@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from './book.entity';
+import { Metric } from '../metrics/metric.entity';
 
 @Injectable()
 export class BooksService {
   constructor(
     @InjectRepository(Book)
     private booksRepository: Repository<Book>,
+    @InjectRepository(Metric)
+    private metricsRepository: Repository<Metric>,
   ) {}
 
   findAll(): Promise<Book[]> {
@@ -27,6 +30,19 @@ export class BooksService {
     if (book && book.stock > 0) {
       book.stock -= 1;
       await this.booksRepository.save(book);
+
+      const currentMonth = new Date().toLocaleString('en-US', { month: 'short' });
+      const metric = await this.metricsRepository.findOne({ where: { month: currentMonth } });
+      if (metric) {
+        metric.value += book.price;
+        await this.metricsRepository.save(metric);
+      } else {
+        const firstMetric = await this.metricsRepository.findOne({ where: {} });
+        if (firstMetric) {
+           firstMetric.value += book.price;
+           await this.metricsRepository.save(firstMetric);
+        }
+      }
     }
   }
 }
