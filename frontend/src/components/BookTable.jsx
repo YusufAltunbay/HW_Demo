@@ -6,35 +6,49 @@ const BookTable = ({ books, onBuy }) => {
   }
 
   return (
-    <div className="book-grid">
-      {books.map(book => (
-        <div key={book.id} className="book-card">
-          <div className="book-cover-container">
-            {book.coverImage !== 'error' ? (
-              <img src={book.coverImage} alt={book.title} className="book-cover" />
-            ) : (
-              <div className="book-placeholder">☒</div>
-            )}
-          </div>
-          <h4 className="book-title" style={{marginBottom: 6, fontSize: '1.1rem'}}>{book.title}</h4>
-          <span className="book-subtitle" style={{marginBottom: 20}}>{book.author}</span>
-          
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: 'auto', paddingTop: 15, borderTop: '1px solid var(--border-color)'}}>
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                <span style={{color: 'var(--text-secondary)', fontSize: '0.8rem'}}>Price</span>
-                <span style={{fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem'}}>{book.price === 0 || book.price === 999999 ? `$${book.price.toFixed(2)}` : `₺${book.price.toFixed(2)}`}</span>
-            </div>
-            
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
+    <div className="card table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Cover Image</th>
+            <th>Book Title</th>
+            <th>Authors</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {books.map(book => (
+            <tr key={book.id}>
+              <td>
+                <div style={{width: 50, height: 75, overflow: 'hidden', borderRadius: 8, boxShadow: '0 2px 5px rgba(0,0,0,0.1)'}}>
+                  {book.coverImage !== 'error' ? (
+                    <img src={book.coverImage} alt={book.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <div style={{ width: '100%', height: '100%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                       <span style={{color: '#94a3b8', fontSize: 18}}>☒</span>
+                    </div>
+                  )}
+                </div>
+              </td>
+              <td>
+                <div style={{fontWeight: 600, color: 'var(--text-primary)'}}>{book.title}</div>
+              </td>
+              <td style={{color: 'var(--text-secondary)'}}>{book.author}</td>
+              <td style={{fontWeight: 600}}>{book.price === 0 || book.price === 999999 ? `$${book.price.toFixed(2)}` : `₺${book.price.toFixed(2)}`}</td>
+              <td>{book.stock}</td>
+              <td>
                 {book.stock > 0 ? (
-                  <button className="btn-primary" style={{padding: '8px 18px', borderRadius: 8, fontSize: '0.85rem'}} onClick={() => onBuy(book.id)}>Satın Al</button>
+                  <button className="btn-primary" style={{padding: '6px 14px', borderRadius: 8, fontSize: '0.85rem'}} onClick={() => onBuy(book.id)}>Satın Al</button>
                 ) : (
-                  <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem', marginTop: 10}}>Tükendi</span>
+                  <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem'}}>Tükendi</span>
                 )}
-            </div>
-          </div>
-        </div>
-      ))}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

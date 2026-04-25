@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import BookTable from '../components/BookTable';
+import BookGrid from '../components/BookGrid';
 
 const Home = () => {
   const [books, setBooks] = useState([]);
@@ -48,7 +48,7 @@ const Home = () => {
             </div>
           </div>
           
-          <BookTable books={books} onBuy={handleBuy} />
+          <BookGrid books={books} onBuy={handleBuy} />
         </div>
       </div>
     </div>

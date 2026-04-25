@@ -32,7 +32,7 @@ export class DatabaseSeederService {
       subtitle: `Subtitle_${randomStr(3)}`,
       author: `User_${randomStr(4)}`,
       price: randomPrice(),
-      coverImage: 'error',
+      coverImage: 'https://s3.amazonaws.com/clarityfm-production/attachments/16430/default/VisionDB-Demo-button.jpg?1497260357',
       stock: Math.floor(Math.random() * 5) + 1, // Random stock between 1-5
     }));
 
