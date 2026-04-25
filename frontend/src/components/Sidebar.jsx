@@ -12,9 +12,9 @@ const Sidebar = ({ active = 'inventory' }) => {
         </div>
       </div>
       <div className="nav-links">
-        <div className="nav-item">
+        <Link to="/home" className={`nav-item ${active === 'home' ? 'active' : ''}`} style={{textDecoration: 'none'}}>
           <Home size={18} /> Home
-        </div>
+        </Link>
         <Link to="/users" className={`nav-item ${active === 'authors' ? 'active' : ''}`} style={{textDecoration: 'none'}}>
           <Users size={18} /> Authors
         </Link>

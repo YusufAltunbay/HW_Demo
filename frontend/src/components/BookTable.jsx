@@ -1,49 +1,40 @@
 import React from 'react';
 
 const BookTable = ({ books, onBuy }) => {
+  if (!books || books.length === 0) {
+    return <div style={{textAlign: 'center', padding: '40px', color: 'var(--text-secondary)'}}>No books in inventory.</div>;
+  }
+
   return (
-    <div className="card table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Book List</th>
-            <th>Authors</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Cover Images</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {books.map((book) => (
-            <tr key={book.id}>
-              <td>
-                <div className="book-title">{book.title}</div>
-                {book.subtitle && <div className="book-subtitle">{book.subtitle}</div>}
-              </td>
-              <td>{book.author}</td>
-              <td>{book.price === 0 || book.price === 999999 ? `$${book.price.toFixed(2)}` : `₺${book.price.toFixed(2)}`}</td>
-              <td>{book.stock}</td>
-              <td>
-                {book.coverImage !== 'error' ? (
-                  <img src={book.coverImage} alt={book.title} style={{ width: 40, height: 60, objectFit: 'cover', borderRadius: 4 }} />
-                ) : (
-                  <div style={{ width: 40, height: 60, background: 'var(--text-secondary)', opacity: 0.2, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 4 }}>
-                     <span style={{color: '#fff', fontSize: 24}}>☒</span>
-                  </div>
-                )}
-              </td>
-              <td>
+    <div className="book-grid">
+      {books.map(book => (
+        <div key={book.id} className="book-card">
+          <div className="book-cover-container">
+            {book.coverImage !== 'error' ? (
+              <img src={book.coverImage} alt={book.title} className="book-cover" />
+            ) : (
+              <div className="book-placeholder">☒</div>
+            )}
+          </div>
+          <h4 className="book-title" style={{marginBottom: 6, fontSize: '1.1rem'}}>{book.title}</h4>
+          <span className="book-subtitle" style={{marginBottom: 20}}>{book.author}</span>
+          
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: 'auto', paddingTop: 15, borderTop: '1px solid var(--border-color)'}}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                <span style={{color: 'var(--text-secondary)', fontSize: '0.8rem'}}>Price</span>
+                <span style={{fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem'}}>{book.price === 0 || book.price === 999999 ? `$${book.price.toFixed(2)}` : `₺${book.price.toFixed(2)}`}</span>
+            </div>
+            
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
                 {book.stock > 0 ? (
-                  <button className="btn-primary" style={{padding: '6px 12px', borderRadius: 6, fontSize: '0.8rem'}} onClick={() => onBuy(book.id)}>Buy</button>
+                  <button className="btn-primary" style={{padding: '8px 18px', borderRadius: 8, fontSize: '0.85rem'}} onClick={() => onBuy(book.id)}>Satın Al</button>
                 ) : (
-                  <span style={{color: '#ef4444', fontWeight: 600, fontSize: '0.85rem'}}>Stokta kalmadı</span>
+                  <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem', marginTop: 10}}>Tükendi</span>
                 )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
