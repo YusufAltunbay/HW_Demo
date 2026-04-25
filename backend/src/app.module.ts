@@ -1,4 +1,4 @@
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseSeederService } from './database-seeder/database-seeder.service';
 import { BooksModule } from './books/books.module';
@@ -27,11 +27,6 @@ import { User } from './users/user.entity';
     UsersModule,
   ],
 })
-export class AppModule implements OnApplicationBootstrap {
+export class AppModule {
   constructor(private readonly seederService: DatabaseSeederService) {}
-
-  async onApplicationBootstrap() {
-    // Seed junk state by default so demo can show the transition
-    await this.seederService.seedJunkState();
-  }
 }
