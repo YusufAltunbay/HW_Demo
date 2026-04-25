@@ -1,0 +1,34 @@
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DatabaseSeederService } from './database-seeder/database-seeder.service';
+import { BooksModule } from './books/books.module';
+import { MetricsModule } from './metrics/metrics.module';
+import { AdminModule } from './admin/admin.module';
+import { DatabaseSeederModule } from './database-seeder/database-seeder.module';
+import { AuthModule } from './auth/auth.module';
+import { Book } from './books/book.entity';
+import { Metric } from './metrics/metric.entity';
+
+@Module({
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'db.sqlite',
+      entities: [Book, Metric],
+      synchronize: true, // Auto create tables for demo
+    }),
+    BooksModule,
+    MetricsModule,
+    AdminModule,
+    DatabaseSeederModule,
+    AuthModule,
+  ],
+})
+export class AppModule implements OnApplicationBootstrap {
+  constructor(private readonly seederService: DatabaseSeederService) {}
+
+  async onApplicationBootstrap() {
+    // Seed junk state by default so demo can show the transition
+    await this.seederService.seedJunkState();
+  }
+}
