@@ -23,6 +23,10 @@ export class BooksService {
   }
 
   async buy(id: number): Promise<void> {
-    await this.booksRepository.delete(id);
+    const book = await this.booksRepository.findOne({ where: { id } });
+    if (book && book.stock > 0) {
+      book.stock -= 1;
+      await this.booksRepository.save(book);
+    }
   }
 }

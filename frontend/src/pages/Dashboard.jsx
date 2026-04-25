@@ -103,7 +103,7 @@ const Dashboard = () => {
   return (
     <div className="layout">
       <div className="app-container">
-        <Sidebar />
+        {isAdmin && <Sidebar />}
         <div className="main-content">
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
             <h1 className="header-title" style={{margin: 0}}>

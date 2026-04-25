@@ -19,4 +19,7 @@ export class Book {
 
   @Column({ nullable: true })
   coverImage: string;
+
+  @Column({ default: 5 })
+  stock: number;
 }

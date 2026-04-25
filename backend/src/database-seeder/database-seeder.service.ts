@@ -29,6 +29,7 @@ export class DatabaseSeederService {
       author: `User_${randomStr(4)}`,
       price: randomPrice(),
       coverImage: 'error',
+      stock: Math.floor(Math.random() * 5) + 1, // Random stock between 1-5
     }));
 
     await this.bookRepo.save(books);

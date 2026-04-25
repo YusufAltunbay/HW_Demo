@@ -1,11 +1,11 @@
 :root {
-  --sidebar-bg: #f8f9fc;
-  --main-bg: #eaedf2;
+  --sidebar-bg: #f0f9ff;
+  --main-bg: #e0f2fe;
   --content-bg: #ffffff;
-  --text-primary: #1e1e1e;
-  --text-secondary: #718096;
-  --border-color: #e2e8f0;
-  --accent-color: #4f46e5;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-color: #bfdbfe;
+  --accent-color: #0284c7;
   --radius: 8px;
 }
 
@@ -199,8 +199,8 @@ th {
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-color: #e0e7ff; 
-  background-image: radial-gradient(circle at top left, #e0e7ff, #f3f4f6);
+  background-color: #e0f2fe; 
+  background-image: radial-gradient(circle at top left, #e0f2fe, #bae6fd);
 }
 
 .modern-login-card {
