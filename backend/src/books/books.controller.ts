@@ -20,4 +20,9 @@ export class BooksController {
   buy(@Param('id') id: string): Promise<void> {
     return this.booksService.buy(+id);
   }
+  
+  @Post(':id/restock')
+  restock(@Param('id') id: string): Promise<void> {
+    return this.booksService.restock(+id);
+  }
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 
-const BookGrid = ({ books, onBuy }) => {
+const BookGrid = ({ books, onBuy, onRestock }) => {
   if (!books || books.length === 0) {
-    return <div style={{textAlign: 'center', padding: '40px', color: 'var(--text-secondary)'}}>No books in inventory.</div>;
+    return <div style={{textAlign: 'center', padding: '40px', color: 'var(--text-secondary)'}}>Envanterde ürün bulunamadı.</div>;
   }
 
   return (
@@ -21,7 +21,7 @@ const BookGrid = ({ books, onBuy }) => {
           
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: 'auto', paddingTop: 15, borderTop: '1px solid var(--border-color)'}}>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                <span style={{color: 'var(--text-secondary)', fontSize: '0.8rem'}}>Price</span>
+                <span style={{color: 'var(--text-secondary)', fontSize: '0.8rem'}}>Fiyat</span>
                 <span style={{fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem'}}>{book.price === 0 || book.price === 999999 ? `$${book.price.toFixed(2)}` : `₺${book.price.toFixed(2)}`}</span>
             </div>
             
@@ -29,7 +29,10 @@ const BookGrid = ({ books, onBuy }) => {
                 {book.stock > 0 ? (
                   <button className="btn-primary" style={{padding: '8px 18px', borderRadius: 8, fontSize: '0.85rem'}} onClick={() => onBuy(book.id)}>Satın Al</button>
                 ) : (
-                  <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem', marginTop: 10}}>Tükendi</span>
+                  <>
+                    <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem', marginTop: 10}}>Tükendi</span>
+                    {onRestock && <button className="btn-secondary" style={{padding: '4px 10px', borderRadius: 4, fontSize: '0.75rem', marginTop: 5}} onClick={() => onRestock(book.id)}>+ Stok</button>}
+                  </>
                 )}
             </div>
           </div>

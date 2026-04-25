@@ -17,6 +17,15 @@ export class DatabaseSeederService {
     await this.bookRepo.clear();
     await this.metricRepo.clear();
     await this.userRepo.clear();
+
+    const matchMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const metrics = matchMonths.map((m) => ({
+      month: m,
+      value: 0,
+      type: 'revenue',
+    }));
+
+    await this.metricRepo.save(metrics);
   }
 
   async seedJunkState() {

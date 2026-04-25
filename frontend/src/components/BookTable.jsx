@@ -1,8 +1,8 @@
 import React from 'react';
 
-const BookTable = ({ books, onBuy }) => {
+const BookTable = ({ books, onBuy, onRestock }) => {
   if (!books || books.length === 0) {
-    return <div style={{textAlign: 'center', padding: '40px', color: 'var(--text-secondary)'}}>No books in inventory.</div>;
+    return <div style={{textAlign: 'center', padding: '40px', color: 'var(--text-secondary)'}}>Envanterde ürün bulunamadı.</div>;
   }
 
   return (
@@ -10,12 +10,12 @@ const BookTable = ({ books, onBuy }) => {
       <table>
         <thead>
           <tr>
-            <th>Cover Image</th>
-            <th>Book Title</th>
-            <th>Authors</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Action</th>
+            <th>Kapak</th>
+            <th>Kitap Adı</th>
+            <th>Yazar</th>
+            <th>Fiyat</th>
+            <th>Stok</th>
+            <th>İşlem</th>
           </tr>
         </thead>
         <tbody>
@@ -42,7 +42,10 @@ const BookTable = ({ books, onBuy }) => {
                 {book.stock > 0 ? (
                   <button className="btn-primary" style={{padding: '6px 14px', borderRadius: 8, fontSize: '0.85rem'}} onClick={() => onBuy(book.id)}>Satın Al</button>
                 ) : (
-                  <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem'}}>Tükendi</span>
+                  <div style={{display: 'flex', gap: 10, alignItems: 'center'}}>
+                    <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem'}}>Tükendi</span>
+                    {onRestock && <button className="btn-secondary" style={{padding: '4px 8px', borderRadius: 6, fontSize: '0.75rem'}} onClick={() => onRestock(book.id)}>+ Stok</button>}
+                  </div>
                 )}
               </td>
             </tr>

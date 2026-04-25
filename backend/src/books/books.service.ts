@@ -45,4 +45,12 @@ export class BooksService {
       }
     }
   }
+
+  async restock(id: number): Promise<void> {
+    const book = await this.booksRepository.findOne({ where: { id } });
+    if (book) {
+      book.stock += 5;
+      await this.booksRepository.save(book);
+    }
+  }
 }

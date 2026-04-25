@@ -25,6 +25,11 @@ const Home = () => {
     fetchBooks();
   };
 
+  const handleRestock = async (id) => {
+    await fetch(`http://localhost:3001/books/${id}/restock`, { method: 'POST' });
+    fetchBooks();
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/home');
@@ -37,18 +42,18 @@ const Home = () => {
         <div className="main-content">
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
             <h1 className="header-title" style={{margin: 0}}>
-              Vitrin (Showcase)
+              Vitrin
             </h1>
             <div>
               {isAdmin ? (
-                <button onClick={handleLogout} className="btn-secondary" style={{padding: '10px 20px', borderRadius: 8}}>Logout</button>
+                <button onClick={handleLogout} className="btn-secondary" style={{padding: '10px 20px', borderRadius: 8}}>Çıkış Yap</button>
               ) : (
-                <button onClick={() => navigate('/login')} className="btn-primary" style={{padding: '10px 24px', borderRadius: 8}}>Sign In</button>
+                <button onClick={() => navigate('/login')} className="btn-primary" style={{padding: '10px 24px', borderRadius: 8}}>Giriş</button>
               )}
             </div>
           </div>
           
-          <BookGrid books={books} onBuy={handleBuy} />
+          <BookGrid books={books} onBuy={handleBuy} onRestock={isAdmin ? handleRestock : undefined} />
         </div>
       </div>
     </div>

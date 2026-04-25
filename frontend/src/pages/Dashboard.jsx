@@ -11,6 +11,8 @@ const Dashboard = () => {
   const [newTitle, setNewTitle] = useState('');
   const [newAuthor, setNewAuthor] = useState('');
   const [newPrice, setNewPrice] = useState('');
+  const [newCoverImage, setNewCoverImage] = useState('');
+  const [newStock, setNewStock] = useState('5');
 
   const navigate = useNavigate();
   const isAdmin = !!localStorage.getItem('token');
@@ -59,6 +61,11 @@ const Dashboard = () => {
     fetchData();
   };
 
+  const handleRestock = async (id) => {
+    await fetch(`http://localhost:3001/books/${id}/restock`, { method: 'POST' });
+    fetchData();
+  };
+
   const handleAddBook = async (e) => {
     e.preventDefault();
     if(!newTitle || !newAuthor || !newPrice) return;
@@ -71,11 +78,15 @@ const Dashboard = () => {
           author: newAuthor,
           price: parseFloat(newPrice),
           subtitle: '',
+          coverImage: newCoverImage || 'error',
+          stock: parseInt(newStock) || 0,
         })
       });
       setNewTitle('');
       setNewAuthor('');
       setNewPrice('');
+      setNewCoverImage('');
+      setNewStock('5');
       fetchData();
     } catch (e) {
       console.error(e);
@@ -107,27 +118,29 @@ const Dashboard = () => {
         <div className="main-content">
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
             <h1 className="header-title" style={{margin: 0}}>
-              {isJunk ? 'Inventory - Test Env.' : isEmpty ? 'Inventory Dashboard - Clean' : 'Inventory Dashboard'}
+              {isJunk ? 'Yönetim Paneli - Test Şubesi' : isEmpty ? 'Yönetim Paneli - Temiz Veri' : 'Yönetim Paneli'}
             </h1>
             <div>
               {isAdmin ? (
-                <button onClick={handleLogout} className="btn-secondary" style={{padding: '10px 20px', borderRadius: 8}}>Logout</button>
+                <button onClick={handleLogout} className="btn-secondary" style={{padding: '10px 20px', borderRadius: 8}}>Çıkış Yap</button>
               ) : (
-                <button onClick={() => navigate('/login')} className="btn-primary" style={{padding: '10px 24px', borderRadius: 8}}>Sign In</button>
+                <button onClick={() => navigate('/login')} className="btn-primary" style={{padding: '10px 24px', borderRadius: 8}}>Giriş</button>
               )}
             </div>
           </div>
           
-          <BookTable books={books} onBuy={handleBuy} />
+          <BookTable books={books} onBuy={handleBuy} onRestock={isAdmin ? handleRestock : undefined} />
           
           {isAdmin && (
             <div className="card" style={{marginTop: 30}}>
-              <h3 style={{marginBottom: 16, fontSize: '1.1rem', fontWeight: 600}}>Add New Data (Manual)</h3>
-              <form onSubmit={handleAddBook} style={{display: 'flex', gap: 15}}>
-                 <input placeholder="Title" value={newTitle} onChange={e => setNewTitle(e.target.value)} style={{flex: 1, padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border-color)'}} />
-                 <input placeholder="Author" value={newAuthor} onChange={e => setNewAuthor(e.target.value)} style={{flex: 1, padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border-color)'}} />
-                 <input placeholder="Price" type="number" step="0.01" value={newPrice} onChange={e => setNewPrice(e.target.value)} style={{width: 120, padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border-color)'}} />
-                 <button type="submit" className="btn-primary" style={{padding: '12px 24px', borderRadius: 8}}>Add Book</button>
+              <h3 style={{marginBottom: 16, fontSize: '1.1rem', fontWeight: 600}}>Yeni Ekle (Manuel)</h3>
+              <form onSubmit={handleAddBook} style={{display: 'flex', gap: 15, flexWrap: 'wrap'}}>
+                 <input placeholder="Kitap Adı" value={newTitle} onChange={e => setNewTitle(e.target.value)} style={{flex: 1, minWidth: 120, padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border-color)'}} />
+                 <input placeholder="Yazar Adı" value={newAuthor} onChange={e => setNewAuthor(e.target.value)} style={{flex: 1, minWidth: 120, padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border-color)'}} />
+                 <input placeholder="Fiyat" type="number" step="0.01" value={newPrice} onChange={e => setNewPrice(e.target.value)} style={{width: 100, padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border-color)'}} />
+                 <input placeholder="Stok" type="number" value={newStock} onChange={e => setNewStock(e.target.value)} style={{width: 90, padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border-color)'}} />
+                 <input placeholder="Görsel (Link)" value={newCoverImage} onChange={e => setNewCoverImage(e.target.value)} style={{flex: 1, minWidth: 150, padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border-color)'}} />
+                 <button type="submit" className="btn-primary" style={{padding: '12px 24px', borderRadius: 8}}>Ekle</button>
               </form>
             </div>
           )}
@@ -140,13 +153,13 @@ const Dashboard = () => {
                 className="admin-reset-btn" 
                 onClick={handleAdminReset}
               >
-                Clear Data (Reset)
+                Tüm Verileri Sıfırla
               </button>
               <button 
                 className="admin-reset-btn danger" 
                 onClick={handleJunkSeed}
               >
-                Inject Junk Data
+                Test Verisi Oluştur
               </button>
             </div>
           )}

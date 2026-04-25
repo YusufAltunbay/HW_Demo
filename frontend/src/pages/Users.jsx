@@ -40,16 +40,16 @@ const Users = () => {
       <div className="app-container">
         <Sidebar active="authors" />
         <div className="main-content">
-          <h1 className="header-title" style={{marginBottom: 30}}>User / Author Management</h1>
+          <h1 className="header-title" style={{marginBottom: 30}}>Kullanıcı Yönetimi</h1>
           <div className="card table-wrapper">
              <table style={{width: '100%'}}>
-               <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Action</th></tr></thead>
+               <thead><tr><th>Kullanıcı Adı</th><th>E-posta</th><th>İşlem</th></tr></thead>
                <tbody>
                   {users.map(u => (
                     <tr key={u.id}>
-                      <td>{u.id}</td><td>{u.username}</td><td>{u.email}</td>
+                      <td>{u.username}</td><td>{u.email}</td>
                       <td>
-                        {isAdmin && <button className="btn-secondary" style={{padding: '6px 12px', borderRadius: 6, fontSize: '0.8rem'}} onClick={() => handleDelete(u.id)}>Delete</button>}
+                        {isAdmin && <button className="btn-secondary" style={{padding: '6px 12px', borderRadius: 6, fontSize: '0.8rem'}} onClick={() => handleDelete(u.id)}>Sil</button>}
                       </td>
                     </tr>
                   ))}
@@ -59,11 +59,11 @@ const Users = () => {
 
           {isAdmin && (
             <div className="card" style={{marginTop: 30}}>
-              <h3 style={{marginBottom: 16, fontSize: '1.1rem', fontWeight: 600}}>Add New User</h3>
+              <h3 style={{marginBottom: 16, fontSize: '1.1rem', fontWeight: 600}}>Yeni Kullanıcı Ekle</h3>
               <form onSubmit={handleAddUser} style={{display: 'flex', gap: 15}}>
-                 <input className="modern-input" placeholder="Username" value={username} onChange={e=>setUsername(e.target.value)} />
-                 <input className="modern-input" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} />
-                 <button className="btn-primary" style={{padding: '12px 24px', borderRadius: 8}}>Add</button>
+                 <input className="modern-input" placeholder="Kullanıcı Adı" value={username} onChange={e=>setUsername(e.target.value)} />
+                 <input className="modern-input" placeholder="E-posta" value={email} onChange={e=>setEmail(e.target.value)} />
+                 <button className="btn-primary" style={{padding: '12px 24px', borderRadius: 8}}>Ekle</button>
               </form>
             </div>
           )}

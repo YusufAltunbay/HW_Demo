@@ -13,17 +13,14 @@ const Sidebar = ({ active = 'inventory' }) => {
       </div>
       <div className="nav-links">
         <Link to="/home" className={`nav-item ${active === 'home' ? 'active' : ''}`} style={{textDecoration: 'none'}}>
-          <Home size={18} /> Home
+          <Home size={18} /> Ana Sayfa
         </Link>
         <Link to="/users" className={`nav-item ${active === 'authors' ? 'active' : ''}`} style={{textDecoration: 'none'}}>
-          <Users size={18} /> Authors
+          <Users size={18} /> Kullanıcılar
         </Link>
         <Link to="/dashboard" className={`nav-item ${active === 'inventory' ? 'active' : ''}`} style={{textDecoration: 'none'}}>
-          <BookOpen size={18} /> Inventory
+          <BookOpen size={18} /> Yönetim
         </Link>
-        <div className="nav-item">
-          <Settings size={18} /> Settings
-        </div>
       </div>
     </div>
   );
