@@ -6,8 +6,12 @@ const RevenueChart = ({ data }) => {
 
   if (!data || data.length === 0) return null;
 
-  const isJunk = data[0].type === 'sales';
+  const isJunk = data.some(item => item.isTest || item.type === 'sales');
   const COLORS = ['#1e293b', '#334155', '#475569', '#0f172a', '#1e3a8a', '#1d4ed8', '#2563eb', '#0369a1', '#0e7490', '#15803d', '#3f6212', '#4c1d95'];
+  const chartData = data.map(item => ({
+    ...item,
+    displayMonth: item.label || item.periodKey || item.month,
+  }));
 
   return (
     <div className="card">
@@ -24,23 +28,23 @@ const RevenueChart = ({ data }) => {
         <ResponsiveContainer width="99%" height="100%">
           {chartType === 'pie' ? (
              <PieChart>
-               <Pie data={data} dataKey="value" nameKey="month" cx="50%" cy="50%" outerRadius={100} label>
-                 {data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
+               <Pie data={chartData} dataKey="value" nameKey="displayMonth" cx="50%" cy="50%" outerRadius={100} label>
+                 {chartData.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
                </Pie>
                <Tooltip />
              </PieChart>
           ) : isJunk ? (
-            <BarChart data={data}>
+            <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="month" tick={{fontSize: 10}} />
+              <XAxis dataKey="displayMonth" tick={{fontSize: 10}} />
               <YAxis tick={{fontSize: 10}} />
               <Tooltip />
               <Bar dataKey="value" fill="#9ca3af" />
             </BarChart>
           ) : (
-            <LineChart data={data}>
+            <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="month" tick={{fontSize: 10}} />
+              <XAxis dataKey="displayMonth" tick={{fontSize: 10}} />
               <YAxis tick={{fontSize: 10}} />
               <Tooltip />
               <Line type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={3} dot={{r: 2}} activeDot={{ r: 6 }} />

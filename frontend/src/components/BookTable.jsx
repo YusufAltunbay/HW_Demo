@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BookTable = ({ books, onBuy, onRestock }) => {
+const BookTable = ({ books, onBuy, onRestock, onDelete }) => {
   if (!books || books.length === 0) {
     return <div style={{textAlign: 'center', padding: '40px', color: 'var(--text-secondary)'}}>Envanterde ürün bulunamadı.</div>;
   }
@@ -39,14 +39,25 @@ const BookTable = ({ books, onBuy, onRestock }) => {
               <td style={{fontWeight: 600}}>{book.price === 0 || book.price === 999999 ? `$${book.price.toFixed(2)}` : `₺${book.price.toFixed(2)}`}</td>
               <td>{book.stock}</td>
               <td>
-                {book.stock > 0 ? (
-                  <button className="btn-primary" style={{padding: '6px 14px', borderRadius: 8, fontSize: '0.85rem'}} onClick={() => onBuy(book.id)}>Satın Al</button>
-                ) : (
-                  <div style={{display: 'flex', gap: 10, alignItems: 'center'}}>
-                    <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem'}}>Tükendi</span>
-                    {onRestock && <button className="btn-secondary" style={{padding: '4px 8px', borderRadius: 6, fontSize: '0.75rem'}} onClick={() => onRestock(book.id)}>+ Stok</button>}
-                  </div>
-                )}
+                <div style={{display: 'flex', gap: 8, alignItems: 'center'}}>
+                  {book.stock > 0 ? (
+                    <button className="btn-primary" style={{padding: '6px 14px', borderRadius: 8, fontSize: '0.85rem'}} onClick={() => onBuy(book.id)}>Satın Al</button>
+                  ) : (
+                    <div style={{display: 'flex', gap: 10, alignItems: 'center'}}>
+                      <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem'}}>Tükendi</span>
+                      {onRestock && <button className="btn-secondary" style={{padding: '4px 8px', borderRadius: 6, fontSize: '0.75rem'}} onClick={() => onRestock(book.id)}>+ Stok</button>}
+                    </div>
+                  )}
+                  {onDelete && (
+                    <button 
+                      className="btn-secondary" 
+                      style={{padding: '6px 10px', borderRadius: 8, fontSize: '0.85rem', color: 'var(--danger-color)', borderColor: 'var(--danger-color)'}} 
+                      onClick={() => onDelete(book.id)}
+                    >
+                      Sil
+                    </button>
+                  )}
+                </div>
               </td>
             </tr>
           ))}

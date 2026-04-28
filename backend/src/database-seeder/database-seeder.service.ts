@@ -5,6 +5,32 @@ import { Book } from '../books/book.entity';
 import { Metric } from '../metrics/metric.entity';
 import { User } from '../users/user.entity';
 
+const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+type RollingMonth = {
+  month: string;
+  periodKey: string;
+  label: string;
+};
+
+const buildRollingMonths = (count: number) => {
+  const currentDate = new Date();
+  const months: RollingMonth[] = [];
+
+  for (let offset = count - 1; offset >= 0; offset -= 1) {
+    const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - offset, 1);
+    const monthIndex = date.getMonth();
+
+    months.push({
+      month: MONTH_LABELS[monthIndex],
+      periodKey: `${date.getFullYear()}-${String(monthIndex + 1).padStart(2, '0')}`,
+      label: date.toLocaleString('tr-TR', { month: 'short', year: 'numeric' }),
+    });
+  }
+
+  return months;
+};
+
 @Injectable()
 export class DatabaseSeederService {
   constructor(
@@ -18,17 +44,10 @@ export class DatabaseSeederService {
     await this.metricRepo.clear();
     await this.userRepo.clear();
 
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const currentMonthIndex = new Date().getMonth();
-    const activeMonths = [];
-    for (let i = 11; i >= 0; i--) {
-      let index = currentMonthIndex - i;
-      if (index < 0) index += 12;
-      activeMonths.push(months[index]);
-    }
-
-    const metrics = activeMonths.map((m) => ({
-      month: m,
+    const metrics = buildRollingMonths(12).map((period: RollingMonth) => ({
+      month: period.month,
+      periodKey: period.periodKey,
+      label: period.label,
       value: 0,
       type: 'revenue',
     }));
@@ -60,17 +79,10 @@ export class DatabaseSeederService {
 
     await this.bookRepo.save(books);
 
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const currentMonthIndex = new Date().getMonth();
-    const activeMonths = [];
-    for (let i = 11; i >= 0; i--) {
-      let index = currentMonthIndex - i;
-      if (index < 0) index += 12;
-      activeMonths.push(months[index]);
-    }
-
-    const metrics = activeMonths.map((m) => ({
-      month: m,
+    const metrics = buildRollingMonths(12).map((period: RollingMonth) => ({
+      month: period.month,
+      periodKey: period.periodKey,
+      label: period.label,
       value: Math.floor(Math.random() * 400),
       type: 'sales',
       isTest: true,

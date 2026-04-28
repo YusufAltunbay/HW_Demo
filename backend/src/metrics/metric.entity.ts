@@ -8,6 +8,12 @@ export class Metric {
   @Column()
   month: string;
 
+  @Column({ nullable: true })
+  periodKey: string;
+
+  @Column({ nullable: true })
+  label: string;
+
   @Column('decimal')
   value: number;
 

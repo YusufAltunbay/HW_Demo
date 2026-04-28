@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { Book } from './book.entity';
 
@@ -34,5 +34,10 @@ export class BooksController {
   @Post(':id/restock')
   restock(@Param('id') id: string): Promise<void> {
     return this.booksService.restock(+id);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string): Promise<void> {
+    return this.booksService.remove(+id);
   }
 }

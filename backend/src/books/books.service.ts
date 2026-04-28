@@ -4,6 +4,14 @@ import { Repository } from 'typeorm';
 import { Book } from './book.entity';
 import { Metric } from '../metrics/metric.entity';
 
+const getCurrentPeriod = () => {
+  const currentDate = new Date();
+  return {
+    month: currentDate.toLocaleString('en-US', { month: 'short' }),
+    periodKey: `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`,
+  };
+};
+
 @Injectable()
 export class BooksService {
   constructor(
@@ -31,13 +39,13 @@ export class BooksService {
       book.stock -= 1;
       await this.booksRepository.save(book);
 
-      const currentMonth = new Date().toLocaleString('en-US', { month: 'short' });
-      const metric = await this.metricsRepository.findOne({ where: { month: currentMonth } });
+      const currentPeriod = getCurrentPeriod();
+      const metric = await this.metricsRepository.findOne({ where: { periodKey: currentPeriod.periodKey } });
       if (metric) {
         metric.value += book.price;
         await this.metricsRepository.save(metric);
       } else {
-        const firstMetric = await this.metricsRepository.findOne({ where: {} });
+        const firstMetric = await this.metricsRepository.findOne({ where: { month: currentPeriod.month } });
         if (firstMetric) {
            firstMetric.value += book.price;
            await this.metricsRepository.save(firstMetric);
@@ -66,13 +74,13 @@ export class BooksService {
 
     // Update metrics
     if (totalValue > 0) {
-      const currentMonth = new Date().toLocaleString('en-US', { month: 'short' });
-      const metric = await this.metricsRepository.findOne({ where: { month: currentMonth } });
+      const currentPeriod = getCurrentPeriod();
+      const metric = await this.metricsRepository.findOne({ where: { periodKey: currentPeriod.periodKey } });
       if (metric) {
         metric.value = Number(metric.value) + totalValue;
         await this.metricsRepository.save(metric);
       } else {
-        const firstMetric = await this.metricsRepository.findOne({ where: {} });
+        const firstMetric = await this.metricsRepository.findOne({ where: { month: currentPeriod.month } });
         if (firstMetric) {
            firstMetric.value = Number(firstMetric.value) + totalValue;
            await this.metricsRepository.save(firstMetric);
@@ -87,5 +95,9 @@ export class BooksService {
       book.stock += 5;
       await this.booksRepository.save(book);
     }
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.booksRepository.delete(id);
   }
 }

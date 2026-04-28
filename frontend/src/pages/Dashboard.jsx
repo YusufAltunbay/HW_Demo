@@ -4,6 +4,14 @@ import Sidebar from '../components/Sidebar';
 import BookTable from '../components/BookTable';
 import RevenueChart from '../components/RevenueChart';
 
+const sortByPeriod = (left, right) => {
+  if (left.periodKey && right.periodKey) {
+    return left.periodKey.localeCompare(right.periodKey);
+  }
+
+  return String(left.month || '').localeCompare(String(right.month || ''));
+};
+
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
   const [metrics, setMetrics] = useState([]);
@@ -21,6 +29,7 @@ const Dashboard = () => {
   // Check if backend has junk data using metrics type
   const isJunk = metrics.some(m => m.isTest);
   const isEmpty = books.length === 0;
+  const visibleMetrics = [...metrics].sort(sortByPeriod).slice(-timeFilter);
 
   const fetchData = async () => {
     setLoading(true);
@@ -72,6 +81,13 @@ const Dashboard = () => {
     fetchData();
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Bu kitabı silmek istediğinize emin misiniz?')) {
+      await fetch(`http://localhost:3001/books/${id}`, { method: 'DELETE' });
+      fetchData();
+    }
+  };
+
   const handleAddBook = async (e) => {
     e.preventDefault();
     if(!newTitle || !newAuthor || !newPrice) return;
@@ -104,17 +120,6 @@ const Dashboard = () => {
     navigate('/home');
   };
 
-  // Hidden Keyboard Shortcut: Shift + R
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.shiftKey && e.key.toLowerCase() === 'r') {
-        isAdmin && handleAdminReset();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleAdminReset, isAdmin]);
-
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -135,7 +140,7 @@ const Dashboard = () => {
             </div>
           </div>
           
-          <BookTable books={books} onBuy={handleBuy} onRestock={isAdmin ? handleRestock : undefined} />
+          <BookTable books={books} onBuy={handleBuy} onRestock={isAdmin ? handleRestock : undefined} onDelete={isAdmin ? handleDelete : undefined} />
           
           {isAdmin && (
             <div className="card" style={{marginTop: 30}}>
@@ -177,7 +182,7 @@ const Dashboard = () => {
               </button>
             </div>
           </div>
-          <RevenueChart data={metrics.slice(-timeFilter)} />
+          <RevenueChart data={visibleMetrics} />
 
           {isAdmin && (
             <div style={{ display: 'flex', gap: 15, justifyContent: 'flex-end', marginTop: 20, marginBottom: 20 }}>
