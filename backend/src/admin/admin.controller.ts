@@ -16,4 +16,10 @@ export class AdminController {
     await this.seederService.seedJunkState();
     return { status: 'success', message: 'Loaded Junk Data' };
   }
+
+  @Post('reset-test')
+  async resetTestData() {
+    await this.seederService.clearTestData();
+    return { status: 'success', message: 'Test data cleared' };
+  }
 }

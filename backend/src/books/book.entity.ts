@@ -22,4 +22,7 @@ export class Book {
 
   @Column({ default: 5 })
   stock: number;
+
+  @Column({ default: false })
+  isTest: boolean;
 }

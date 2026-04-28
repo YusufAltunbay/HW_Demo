@@ -28,10 +28,14 @@ export class DatabaseSeederService {
     await this.metricRepo.save(metrics);
   }
 
+  async clearTestData() {
+    await this.bookRepo.delete({ isTest: true });
+    await this.metricRepo.delete({ isTest: true });
+    await this.userRepo.delete({ isTest: true });
+  }
+
   async seedJunkState() {
-    await this.bookRepo.clear();
-    await this.metricRepo.clear();
-    await this.userRepo.clear();
+    await this.clearTestData();
 
     const randomStr = (len) => Math.random().toString(36).substring(2, 2 + len);
     const randomPrice = () => parseFloat((Math.random() * 1000).toFixed(2));
@@ -42,7 +46,8 @@ export class DatabaseSeederService {
       author: `User_${randomStr(4)}`,
       price: randomPrice(),
       coverImage: 'https://s3.amazonaws.com/clarityfm-production/attachments/16430/default/VisionDB-Demo-button.jpg?1497260357',
-      stock: Math.floor(Math.random() * 5) + 1, // Random stock between 1-5
+      stock: Math.floor(Math.random() * 5) + 1,
+      isTest: true,
     }));
 
     await this.bookRepo.save(books);
@@ -52,6 +57,7 @@ export class DatabaseSeederService {
       month: m,
       value: Math.floor(Math.random() * 400),
       type: 'sales',
+      isTest: true,
     }));
 
     await this.metricRepo.save(metrics);
@@ -59,7 +65,8 @@ export class DatabaseSeederService {
     const users = Array.from({ length: 3 }).map(() => ({
       username: `RandomAuthor_${randomStr(4)}`,
       email: `${randomStr(4)}@test.com`,
-      role: 'author'
+      role: 'author',
+      isTest: true,
     }));
 
     await this.userRepo.save(users);

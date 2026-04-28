@@ -16,4 +16,7 @@ export class User {
 
   @Column({ default: 'author' })
   role: string;
+
+  @Column({ default: false })
+  isTest: boolean;
 }

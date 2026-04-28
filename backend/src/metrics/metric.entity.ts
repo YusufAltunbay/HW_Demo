@@ -12,5 +12,8 @@ export class Metric {
   value: number;
 
   @Column()
-  type: string; // 'revenue' or 'sales' or 'junk'
+  type: string;
+
+  @Column({ default: false })
+  isTest: boolean;
 }

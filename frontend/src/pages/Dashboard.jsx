@@ -18,7 +18,7 @@ const Dashboard = () => {
   const isAdmin = !!localStorage.getItem('token');
 
   // Check if backend has junk data using metrics type
-  const isJunk = metrics.length > 0 && metrics[0].type === 'sales';
+  const isJunk = metrics.some(m => m.isTest);
   const isEmpty = books.length === 0;
 
   const fetchData = async () => {
@@ -53,6 +53,11 @@ const Dashboard = () => {
 
   const handleJunkSeed = async () => {
     await fetch('http://localhost:3001/admin/junk', { method: 'POST' });
+    fetchData();
+  };
+
+  const handleSoftReset = async () => {
+    await fetch('http://localhost:3001/admin/reset-test', { method: 'POST' });
     fetchData();
   };
 
@@ -154,6 +159,12 @@ const Dashboard = () => {
                 onClick={handleAdminReset}
               >
                 Tüm Verileri Sıfırla
+              </button>
+              <button 
+                className="admin-reset-btn" 
+                onClick={handleSoftReset}
+              >
+                Test Verisini Temizle
               </button>
               <button 
                 className="admin-reset-btn danger" 
