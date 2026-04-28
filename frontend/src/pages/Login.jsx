@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('1234');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -36,7 +36,7 @@ const Login = () => {
   return (
     <div className="modern-login-wrap">
       <div className="modern-login-card">
-        <h2 style={{ marginBottom: 30, textAlign: 'center', fontSize: '1.8rem', fontWeight: 600, color: '#1e293b' }}>Yönetici Girişi</h2>
+        <h2 style={{ marginBottom: 30, textAlign: 'center', fontSize: '1.8rem', fontWeight: 600, color: '#1e293b' }}>Giriş Yap</h2>
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
           <input 
             type="text" 

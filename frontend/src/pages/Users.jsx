@@ -6,6 +6,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const isAdmin = !!localStorage.getItem('token');
 
   const fetchUsers = async () => {
@@ -25,9 +26,9 @@ const Users = () => {
     if(!username) return;
     await fetch('http://localhost:3001/users', { 
        method: 'POST', headers: {'Content-Type': 'application/json'},
-       body: JSON.stringify({username, email})
+       body: JSON.stringify({username, email, password})
     });
-    setUsername(''); setEmail(''); fetchUsers();
+    setUsername(''); setEmail(''); setPassword(''); fetchUsers();
   };
 
   const handleDelete = async(id) => {
@@ -63,6 +64,7 @@ const Users = () => {
               <form onSubmit={handleAddUser} style={{display: 'flex', gap: 15}}>
                  <input className="modern-input" placeholder="Kullanıcı Adı" value={username} onChange={e=>setUsername(e.target.value)} />
                  <input className="modern-input" placeholder="E-posta" value={email} onChange={e=>setEmail(e.target.value)} />
+                 <input type="password" className="modern-input" placeholder="Şifre" value={password} onChange={e=>setPassword(e.target.value)} />
                  <button className="btn-primary" style={{padding: '12px 24px', borderRadius: 8}}>Ekle</button>
               </form>
             </div>
