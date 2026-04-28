@@ -20,6 +20,16 @@ export class BooksController {
   buy(@Param('id') id: string): Promise<void> {
     return this.booksService.buy(+id);
   }
+
+  @Post('checkout')
+  async checkout(@Body() items: { id: number, quantity: number }[]): Promise<{ status: string }> {
+    try {
+      await this.booksService.checkout(items);
+      return { status: 'success' };
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
   
   @Post(':id/restock')
   restock(@Param('id') id: string): Promise<void> {

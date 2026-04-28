@@ -38,7 +38,7 @@ export class DatabaseSeederService {
     await this.clearTestData();
 
     const randomStr = (len) => Math.random().toString(36).substring(2, 2 + len);
-    const randomPrice = () => parseFloat((Math.random() * 1000).toFixed(2));
+    const randomPrice = () => Math.floor(Math.random() * 990) + 10;
 
     const books = Array.from({ length: 5 }).map(() => ({
       title: `Test_Title_${randomStr(5)}`,

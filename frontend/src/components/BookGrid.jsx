@@ -27,7 +27,7 @@ const BookGrid = ({ books, onBuy, onRestock }) => {
             
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
                 {book.stock > 0 ? (
-                  <button className="btn-primary" style={{padding: '8px 18px', borderRadius: 8, fontSize: '0.85rem'}} onClick={() => onBuy(book.id)}>Satın Al</button>
+                  <button className="btn-primary" style={{padding: '8px 18px', borderRadius: 8, fontSize: '0.85rem'}} onClick={() => onBuy(book)}>Sepete Ekle</button>
                 ) : (
                   <>
                     <span style={{color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.85rem', marginTop: 10}}>Tükendi</span>

@@ -46,6 +46,41 @@ export class BooksService {
     }
   }
 
+  async checkout(items: { id: number, quantity: number }[]): Promise<void> {
+    let totalValue = 0;
+    const booksToSave: Book[] = [];
+
+    // Check stock for all items
+    for (const item of items) {
+      const book = await this.booksRepository.findOne({ where: { id: item.id } });
+      if (!book) throw new Error(`Book ${item.id} not found`);
+      if (book.stock < item.quantity) throw new Error(`Not enough stock for book ${book.title}`);
+      
+      book.stock -= item.quantity;
+      totalValue += book.price * item.quantity;
+      booksToSave.push(book);
+    }
+
+    // Save all books
+    await this.booksRepository.save(booksToSave);
+
+    // Update metrics
+    if (totalValue > 0) {
+      const currentMonth = new Date().toLocaleString('en-US', { month: 'short' });
+      const metric = await this.metricsRepository.findOne({ where: { month: currentMonth } });
+      if (metric) {
+        metric.value = Number(metric.value) + totalValue;
+        await this.metricsRepository.save(metric);
+      } else {
+        const firstMetric = await this.metricsRepository.findOne({ where: {} });
+        if (firstMetric) {
+           firstMetric.value = Number(firstMetric.value) + totalValue;
+           await this.metricsRepository.save(firstMetric);
+        }
+      }
+    }
+  }
+
   async restock(id: number): Promise<void> {
     const book = await this.booksRepository.findOne({ where: { id } });
     if (book) {
