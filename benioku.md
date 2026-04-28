@@ -32,3 +32,46 @@ Sistem tam teşekküllü (Full-Stack) bir yapıya sahiptir. Ön yüz (Frontend) 
 1.  **Veri Talebi:** Frontend yüklendiğinde Backend'den kitapları (`/books`) ve metrikleri (`/metrics`) ister.
 2.  **Etkileşim:** Kullanıcı bir kitap satın aldığında (`/books/checkout` veya `/books/:id/buy`), Backend ilgili kitabın stoğunu azaltır ve o anki ayın (`periodKey`) gelir hanesine ilgili fiyatı ekler.
 3.  **Yansıma:** Satın alma işlemi başarıyla bittikten sonra Frontend verileri tekrar çeker ve hem azalan stokları hem de grafikte yükselen gelir tablosunu eşzamanlı olarak kullanıcıya gösterir.
+
+## 4. Kurulum ve Çalıştırma Rehberi
+
+Projeyi (zipten çıkardıktan sonra) bilgisayarınızda çalıştırabilmeniz için **Node.js** yüklü olmalıdır. Proje indirildiğinde yer tasarrufu sağlamak amacıyla `node_modules` paketleri içinde bulunmaz. Bu nedenle aşağıdaki adımları izleyerek projeyi kurup başlatabilirsiniz.
+
+Arka uç (Backend) ve Ön yüz (Frontend) için iki ayrı terminal penceresi kullanmanız gerekmektedir.
+
+### Adım 1: Arka Uç (Backend) Kurulumu ve Çalıştırılması
+Arka uç sunucusu veritabanı işlemlerini ve ana mantığı yönetir.
+
+1. Terminali açın ve `backend` klasörüne girin:
+   ```bash
+   cd backend
+   ```
+2. Gerekli kütüphaneleri (bağımlılıkları) yükleyin:
+   ```bash
+   npm install
+   ```
+3. Sunucuyu başlatın:
+   ```bash
+   npm run start:dev
+   ```
+*(Not: Sunucu başarıyla başladığında veritabanı otomatik olarak oluşturulacak ve çalışmaya başlayacaktır.)*
+
+### Adım 2: Ön Yüz (Frontend) Kurulumu ve Çalıştırılması
+Ön yüz, kullanıcıların etkileşime gireceği arayüzü sunar.
+
+1. **İkinci (yeni) bir terminal penceresi açın** ve `frontend` klasörüne girin:
+   ```bash
+   cd frontend
+   ```
+2. Gerekli kütüphaneleri yükleyin:
+   ```bash
+   npm install
+   ```
+3. Uygulamayı geliştirme modunda başlatın:
+   ```bash
+   npm run dev
+   ```
+
+### Adım 3: Projeyi Görüntüleme
+Terminalde size verilen adrese (genellikle `http://localhost:5173`) tarayıcınızdan giderek projeyi kullanmaya başlayabilirsiniz. Sistem ilk açıldığında arka uçtan otomatik olarak demo verisi oluşturup getirecektir.
+
