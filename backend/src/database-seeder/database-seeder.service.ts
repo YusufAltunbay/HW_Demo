@@ -18,8 +18,16 @@ export class DatabaseSeederService {
     await this.metricRepo.clear();
     await this.userRepo.clear();
 
-    const matchMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const metrics = matchMonths.map((m) => ({
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const currentMonthIndex = new Date().getMonth();
+    const activeMonths = [];
+    for (let i = 11; i >= 0; i--) {
+      let index = currentMonthIndex - i;
+      if (index < 0) index += 12;
+      activeMonths.push(months[index]);
+    }
+
+    const metrics = activeMonths.map((m) => ({
       month: m,
       value: 0,
       type: 'revenue',
@@ -52,8 +60,16 @@ export class DatabaseSeederService {
 
     await this.bookRepo.save(books);
 
-    const matchMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const metrics = matchMonths.map((m) => ({
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const currentMonthIndex = new Date().getMonth();
+    const activeMonths = [];
+    for (let i = 11; i >= 0; i--) {
+      let index = currentMonthIndex - i;
+      if (index < 0) index += 12;
+      activeMonths.push(months[index]);
+    }
+
+    const metrics = activeMonths.map((m) => ({
       month: m,
       value: Math.floor(Math.random() * 400),
       type: 'sales',

@@ -13,6 +13,7 @@ const Dashboard = () => {
   const [newPrice, setNewPrice] = useState('');
   const [newCoverImage, setNewCoverImage] = useState('');
   const [newStock, setNewStock] = useState('5');
+  const [timeFilter, setTimeFilter] = useState(6);
 
   const navigate = useNavigate();
   const isAdmin = !!localStorage.getItem('token');
@@ -150,7 +151,33 @@ const Dashboard = () => {
             </div>
           )}
 
-          <RevenueChart data={metrics} />
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 30, marginBottom: 15}}>
+            <h3 style={{margin: 0, fontSize: '1.2rem'}}>Satış İstatistikleri</h3>
+            <div style={{display: 'flex', gap: 10}}>
+              <button 
+                className={timeFilter === 3 ? "btn-primary" : "btn-secondary"} 
+                style={{padding: '6px 12px', borderRadius: 6, fontSize: '0.85rem'}}
+                onClick={() => setTimeFilter(3)}
+              >
+                3 Aylık
+              </button>
+              <button 
+                className={timeFilter === 6 ? "btn-primary" : "btn-secondary"} 
+                style={{padding: '6px 12px', borderRadius: 6, fontSize: '0.85rem'}}
+                onClick={() => setTimeFilter(6)}
+              >
+                6 Aylık
+              </button>
+              <button 
+                className={timeFilter === 12 ? "btn-primary" : "btn-secondary"} 
+                style={{padding: '6px 12px', borderRadius: 6, fontSize: '0.85rem'}}
+                onClick={() => setTimeFilter(12)}
+              >
+                1 Yıllık
+              </button>
+            </div>
+          </div>
+          <RevenueChart data={metrics.slice(-timeFilter)} />
 
           {isAdmin && (
             <div style={{ display: 'flex', gap: 15, justifyContent: 'flex-end', marginTop: 20, marginBottom: 20 }}>
