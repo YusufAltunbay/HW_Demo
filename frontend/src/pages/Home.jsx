@@ -6,7 +6,8 @@ import BookGrid from '../components/BookGrid';
 const Home = () => {
   const [books, setBooks] = useState([]);
   const navigate = useNavigate();
-  const isAdmin = !!localStorage.getItem('token');
+  const isLoggedIn = !!localStorage.getItem('token');
+  const isAdmin = localStorage.getItem('role') === 'admin';
 
   const fetchBooks = async () => {
     try {
@@ -21,6 +22,10 @@ const Home = () => {
   }, []);
 
   const handleBuy = async (id) => {
+    if (!isLoggedIn) {
+      alert('Lütfen satın almak için giriş yapın veya kayıt olun.');
+      return;
+    }
     await fetch(`http://localhost:3001/books/${id}/buy`, { method: 'POST' });
     fetchBooks();
   };
@@ -32,6 +37,7 @@ const Home = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     navigate('/home');
   };
 
@@ -45,10 +51,13 @@ const Home = () => {
               Vitrin
             </h1>
             <div>
-              {isAdmin ? (
+              {isLoggedIn ? (
                 <button onClick={handleLogout} className="btn-secondary" style={{padding: '10px 20px', borderRadius: 8}}>Çıkış Yap</button>
               ) : (
-                <button onClick={() => navigate('/login')} className="btn-primary" style={{padding: '10px 24px', borderRadius: 8}}>Giriş</button>
+                <div style={{ display: 'flex', gap: 10 }}>
+                  <button onClick={() => navigate('/login')} className="btn-secondary" style={{padding: '10px 24px', borderRadius: 8}}>Giriş</button>
+                  <button onClick={() => navigate('/register')} className="btn-primary" style={{padding: '10px 24px', borderRadius: 8}}>Kayıt Ol</button>
+                </div>
               )}
             </div>
           </div>

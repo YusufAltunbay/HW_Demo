@@ -6,10 +6,22 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  login(@Body() body: any) {
+  async login(@Body() body: any) {
+    // Admin override
     if (body.username === 'admin' && body.password === '1234') {
-      return { token: 'fake-jwt-token-12345' };
+      return { token: 'admin-token', role: 'admin', username: 'admin' };
     }
-    throw new UnauthorizedException('Invalid credentials');
+    
+    const user = await this.authService.validateUser(body.username, body.password);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    
+    return { token: 'user-token-' + user.id, role: user.role, username: user.username };
+  }
+
+  @Post('register')
+  async register(@Body() body: any) {
+    return this.authService.register(body);
   }
 }

@@ -15,8 +15,15 @@ const Login = () => {
         body: JSON.stringify({ username, password })
       });
       if (res.ok) {
-        localStorage.setItem('token', 'admin-token');
-        navigate('/dashboard');
+        const data = await res.json();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('role', data.role);
+        
+        if (data.role === 'admin') {
+          navigate('/dashboard');
+        } else {
+          navigate('/home');
+        }
       } else {
         alert('Geçersiz giriş bilgileri.');
       }
