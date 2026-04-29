@@ -40,14 +40,14 @@ export class BooksService {
       await this.booksRepository.save(book);
 
       const currentPeriod = getCurrentPeriod();
-      const metric = await this.metricsRepository.findOne({ where: { periodKey: currentPeriod.periodKey } });
+      const metric = await this.metricsRepository.findOne({ where: { periodKey: currentPeriod.periodKey, isTest: book.isTest } });
       if (metric) {
-        metric.value += book.price;
+        metric.value = Number(metric.value) + Number(book.price);
         await this.metricsRepository.save(metric);
       } else {
-        const firstMetric = await this.metricsRepository.findOne({ where: { month: currentPeriod.month } });
+        const firstMetric = await this.metricsRepository.findOne({ where: { month: currentPeriod.month, isTest: book.isTest } });
         if (firstMetric) {
-           firstMetric.value += book.price;
+           firstMetric.value = Number(firstMetric.value) + Number(book.price);
            await this.metricsRepository.save(firstMetric);
         }
       }
@@ -55,7 +55,8 @@ export class BooksService {
   }
 
   async checkout(items: { id: number, quantity: number }[]): Promise<void> {
-    let totalValue = 0;
+    let totalRealValue = 0;
+    let totalTestValue = 0;
     const booksToSave: Book[] = [];
 
     // Check stock for all items
@@ -65,28 +66,37 @@ export class BooksService {
       if (book.stock < item.quantity) throw new Error(`Not enough stock for book ${book.title}`);
       
       book.stock -= item.quantity;
-      totalValue += book.price * item.quantity;
+      if (book.isTest) {
+        totalTestValue += Number(book.price) * item.quantity;
+      } else {
+        totalRealValue += Number(book.price) * item.quantity;
+      }
       booksToSave.push(book);
     }
 
     // Save all books
     await this.booksRepository.save(booksToSave);
 
-    // Update metrics
-    if (totalValue > 0) {
-      const currentPeriod = getCurrentPeriod();
-      const metric = await this.metricsRepository.findOne({ where: { periodKey: currentPeriod.periodKey } });
-      if (metric) {
-        metric.value = Number(metric.value) + totalValue;
-        await this.metricsRepository.save(metric);
-      } else {
-        const firstMetric = await this.metricsRepository.findOne({ where: { month: currentPeriod.month } });
-        if (firstMetric) {
-           firstMetric.value = Number(firstMetric.value) + totalValue;
-           await this.metricsRepository.save(firstMetric);
+    // Update metrics helper
+    const updateMetricForValue = async (value: number, isTest: boolean) => {
+      if (value > 0) {
+        const currentPeriod = getCurrentPeriod();
+        const metric = await this.metricsRepository.findOne({ where: { periodKey: currentPeriod.periodKey, isTest } });
+        if (metric) {
+          metric.value = Number(metric.value) + value;
+          await this.metricsRepository.save(metric);
+        } else {
+          const firstMetric = await this.metricsRepository.findOne({ where: { month: currentPeriod.month, isTest } });
+          if (firstMetric) {
+             firstMetric.value = Number(firstMetric.value) + value;
+             await this.metricsRepository.save(firstMetric);
+          }
         }
       }
-    }
+    };
+
+    await updateMetricForValue(totalRealValue, false);
+    await updateMetricForValue(totalTestValue, true);
   }
 
   async restock(id: number): Promise<void> {
